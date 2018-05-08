@@ -18,9 +18,10 @@ VescDriver::VescDriver(ros::NodeHandle nh,
         boost::bind(&VescDriver::vescPacketCallback, this, _1),
         boost::bind(&VescDriver::vescErrorCallback, this, _1)),
   duty_cycle_limit_(private_nh, "duty_cycle", -1.0, 1.0), current_limit_(private_nh, "current"),
-  brake_limit_(private_nh, "brake"), speed_limit_(private_nh, "speed"),
-  position_limit_(private_nh, "position"), servo_limit_(private_nh, "servo", 0.0, 1.0),
-  driver_mode_(MODE_INITIALIZING), fw_version_major_(-1), fw_version_minor_(-1)
+  torque_limit_(private_nh, "torque"), brake_limit_(private_nh, "brake"),
+  speed_limit_(private_nh, "speed"), position_limit_(private_nh, "position"),
+  servo_limit_(private_nh, "servo", 0.0, 1.0), driver_mode_(MODE_INITIALIZING),
+  fw_version_major_(-1), fw_version_minor_(-1)
 {
   // get vesc serial port address
   std::string port;
@@ -51,6 +52,8 @@ VescDriver::VescDriver(ros::NodeHandle nh,
   duty_cycle_sub_ = nh.subscribe("commands/motor/duty_cycle", 10,
                                  &VescDriver::dutyCycleCallback, this);
   current_sub_ = nh.subscribe("commands/motor/current", 10, &VescDriver::currentCallback, this);
+  // TODO(avk): This still subscribes the topic for motor current but we should convert to torques.
+  torque_sub_ = nh.subscribe("commands/motor/current", 10, &VescDriver::torqueCallback, this);
   brake_sub_ = nh.subscribe("commands/motor/brake", 10, &VescDriver::brakeCallback, this);
   speed_sub_ = nh.subscribe("commands/motor/speed", 10, &VescDriver::speedCallback, this);
   position_sub_ = nh.subscribe("commands/motor/position", 10, &VescDriver::positionCallback, this);
@@ -166,6 +169,19 @@ void VescDriver::currentCallback(const std_msgs::Float64::ConstPtr& current)
 {
   if (driver_mode_ = MODE_OPERATING) {
     vesc_.setCurrent(current_limit_.clip(current->data));
+  }
+}
+
+/**
+ * @param current Commanded VESC current in Amps. Any value is accepted by this driver. However,
+ *                note that the VESC may impose a more restrictive bounds on the range depending on
+ *                its configuration.
+ */
+void VescDriver::torqueCallback(const std_msgs::Float64::ConstPtr& torque)
+{
+  // TODO(avk): What is the torque limit?
+  if (driver_mode_ = MODE_OPERATING) {
+    vesc_.setTorque(torque_limit_.clip(torque->data));
   }
 }
 
