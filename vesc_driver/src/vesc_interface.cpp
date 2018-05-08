@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 #include <serial/serial.h>
 #include <boost/crc.hpp>
@@ -218,6 +219,13 @@ void VescInterface::setDutyCycle(double duty_cycle)
 
 void VescInterface::setCurrent(double current)
 {
+  send(VescPacketSetCurrent(current));
+}
+
+void VescInterface::setTorque(double torque)
+{
+  // TODO(avk): move the hard code some place else.
+  double current = torque * 2 * M_PI * 3500.0 / 60.0;
   send(VescPacketSetCurrent(current));
 }
 

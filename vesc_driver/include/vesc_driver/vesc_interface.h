@@ -87,6 +87,7 @@ public:
   void requestState();
   void setDutyCycle(double duty_cycle);
   void setCurrent(double current);
+  void setTorque(double torque);
   void setBrake(double brake);
   void setSpeed(double speed);
   void setPosition(double position);
