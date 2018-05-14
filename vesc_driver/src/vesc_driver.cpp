@@ -53,7 +53,7 @@ VescDriver::VescDriver(ros::NodeHandle nh,
                                  &VescDriver::dutyCycleCallback, this);
   current_sub_ = nh.subscribe("commands/motor/current", 10, &VescDriver::currentCallback, this);
   // TODO(avk): This still subscribes the topic for motor current but we should convert to torques.
-  torque_sub_ = nh.subscribe("commands/motor/current", 10, &VescDriver::torqueCallback, this);
+  torque_sub_ = nh.subscribe("commands/motor/torque", 10, &VescDriver::torqueCallback, this);
   brake_sub_ = nh.subscribe("commands/motor/brake", 10, &VescDriver::brakeCallback, this);
   speed_sub_ = nh.subscribe("commands/motor/speed", 10, &VescDriver::speedCallback, this);
   position_sub_ = nh.subscribe("commands/motor/position", 10, &VescDriver::positionCallback, this);
