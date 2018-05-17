@@ -71,3 +71,10 @@ install(DIRECTORY launch/
 #############
 
 # TODO
+
+
+# This custom target doesn't affect building libherb but is only for
+# displaying the header files in IDEs.
+FILE(GLOB_RECURSE vescDrivers_headers "include/*.h")
+add_custom_target(headers SOURCES ${vescDrivers_headers})
+

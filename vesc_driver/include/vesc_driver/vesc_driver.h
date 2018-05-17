@@ -45,7 +45,6 @@ private:
   CommandLimit speed_limit_;
   CommandLimit position_limit_;
   CommandLimit servo_limit_;
-  // TODO(avk): Find the limits based on current.
   CommandLimit torque_limit_;
 
   // ROS services
@@ -57,7 +56,6 @@ private:
   ros::Subscriber speed_sub_;
   ros::Subscriber position_sub_;
   ros::Subscriber servo_sub_;
-  // TODO(avk): Use the current subscriber to get torques also
   ros::Subscriber torque_sub_;
   ros::Timer timer_;
 
@@ -77,7 +75,6 @@ private:
   void dutyCycleCallback(const std_msgs::Float64::ConstPtr& duty_cycle);
   void currentCallback(const std_msgs::Float64::ConstPtr& current);
   void torqueCallback(const std_msgs::Float64::ConstPtr& torque);
-  // TODO(avk): Define a torque callback functions that waits for torque messages.
   void brakeCallback(const std_msgs::Float64::ConstPtr& brake);
   void speedCallback(const std_msgs::Float64::ConstPtr& speed);
   void positionCallback(const std_msgs::Float64::ConstPtr& position);

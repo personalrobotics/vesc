@@ -52,7 +52,6 @@ VescDriver::VescDriver(ros::NodeHandle nh,
   duty_cycle_sub_ = nh.subscribe("commands/motor/duty_cycle", 10,
                                  &VescDriver::dutyCycleCallback, this);
   current_sub_ = nh.subscribe("commands/motor/current", 10, &VescDriver::currentCallback, this);
-  // TODO(avk): This still subscribes the topic for motor current but we should convert to torques.
   torque_sub_ = nh.subscribe("commands/motor/torque", 10, &VescDriver::torqueCallback, this);
   brake_sub_ = nh.subscribe("commands/motor/brake", 10, &VescDriver::brakeCallback, this);
   speed_sub_ = nh.subscribe("commands/motor/speed", 10, &VescDriver::speedCallback, this);
@@ -179,7 +178,6 @@ void VescDriver::currentCallback(const std_msgs::Float64::ConstPtr& current)
  */
 void VescDriver::torqueCallback(const std_msgs::Float64::ConstPtr& torque)
 {
-  // TODO(avk): What is the torque limit?
   if (driver_mode_ = MODE_OPERATING) {
     vesc_.setTorque(torque_limit_.clip(torque->data));
   }

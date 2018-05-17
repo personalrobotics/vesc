@@ -224,7 +224,7 @@ void VescInterface::setCurrent(double current)
 
 void VescInterface::setTorque(double torque)
 {
-  // TODO(avk): move the hard code some place else.
+  // TODO(avk): read the conversion factors from a utils script.
   double current = torque * 2 * M_PI * 3500.0 / 60.0;
   send(VescPacketSetCurrent(current));
 }
