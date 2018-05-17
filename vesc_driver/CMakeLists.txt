@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(vesc_driver)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 find_package(catkin REQUIRED COMPONENTS
   nodelet
@@ -33,6 +34,12 @@ add_executable(vesc_driver_node src/vesc_driver_node.cpp
                                 src/vesc_packet_factory.cpp)
 add_dependencies(vesc_driver_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(vesc_driver_node
+  ${catkin_LIBRARIES}
+)
+
+add_executable(torque_publisher_node src/torque_publisher_node.cpp)
+add_dependencies(torque_publisher_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(torque_publisher_node
   ${catkin_LIBRARIES}
 )
 
