@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "torque_publisher");
   ros::NodeHandle n;
-  ros::Publisher torque_pub = n.advertise<std_msgs::Float64>("torqu_publisher", 1000);
+  ros::Publisher torque_pub = n.advertise<std_msgs::Float64>("/vesc/commands/motor/torque", 1000);
   ros::Rate loop_rate(10);
 
   std::chrono::seconds timeout(3);
